@@ -1,10 +1,10 @@
-/*Include Dune query number*/
-
-/* block_time */
-/* tx_hash
-/* token_burn_amount_raw */
-/* token_burn_amount */
-/* token_contract_address */
-/* token_name */
-/* token_decimals */
-
+/* Dune query number  - 3440960 */
+SELECT
+  date_trunc('day', evt_block_time) as day,
+  contract_address as token_contract_address,
+  'rETH' as token_name,
+  SUM(CAST(amount AS DOUBLE)) / 1e18 AS token_burn_amount
+FROM
+  rocketpool_ethereum.RocketTokenRETH_evt_TokensBurned
+group by 
+    1,2
