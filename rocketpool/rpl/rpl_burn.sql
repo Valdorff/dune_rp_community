@@ -1,10 +1,7 @@
-/*Include Dune query number*/
-
-/* block_time */
-/* tx_hash
-/* token_burn_amount_raw */
-/* token_burn_amount */
-/* token_contract_address */
-/* token_name */
-/* token_decimals */
-
+ /* Dune query number  - 3429927 */
+ /* Placeholder for any burn events */
+ SELECT 
+    cast('2021-10-02' as TIMESTAMP) as day
+    , 0xd33526068d116ce69f19a9ee46f0bd304f21a51f as token_contract_address
+    , 'RPL' as token_name
+    , 0 as token_burn_amount
