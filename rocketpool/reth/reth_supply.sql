@@ -1,4 +1,4 @@
-/* Dune query number  - 5780919 */
+/* Dune query number  - 3440968 */
 with days as (select date as day from unnest(sequence(date('2021-10-02'),CURRENT_DATE,interval '1' day)) tbl(date)
 )
 , totals as (
