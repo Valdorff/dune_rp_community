@@ -18,9 +18,11 @@ with
         OR token_sold_address = 0xBe9895146f7AF43049ca1c1AE358B0541Ea49704
       )
       AND block_time >= CAST('2022-02-07' AS TIMESTAMP)
+      and amount_usd > 10
   )
 SELECT
   tr.time,
+  date_trunc('day',tr.time) as day,
   tr.token_trade_amount,
   tr.token_trade_amount_usd,
   tr.token_trade_amount_usd / CAST(pr.price AS DOUBLE) AS token_trade_amount_eth, /* Trade size in USD divided by USD/ETH is amount of USD. */
