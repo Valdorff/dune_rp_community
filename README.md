@@ -1,4 +1,4 @@
-# Rocketpool Community Dune SQL Queries Repository
+# Rocket Pool Community Dune SQL Queries Repository
 
 Welcome to the Rocketpool Community Dune SQL Queries repository! This repository is dedicated to storing and managing SQL queries utilized by the Rocketpool Community, primarily sourced from Dune Analytics.
 
