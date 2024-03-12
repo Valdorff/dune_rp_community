@@ -1,4 +1,4 @@
-# Rocketpool Community Dune SQL Queries Repository
+# Rocket Pool Community Dune SQL Queries Repository
 
 Welcome to the Rocketpool Community Dune SQL Queries repository! This repository is dedicated to storing and managing SQL queries utilized by the Rocketpool Community, primarily sourced from Dune Analytics.
 
@@ -46,6 +46,6 @@ This repository is provided under the [MIT License](LICENSE), granting permissio
 
 ## Contact
 
-If you have any questions, suggestions, or concerns regarding this repository, feel free to contact us by opening an issue on GitHub.
+If you have any questions, suggestions, or concerns regarding this repository, feel free to contact us by opening an issue on GitHub or by joining the conversation in the [Rocket Pool Discord](https://discord.gg/rocketpool).
 
 Thank you for contributing to the Rocketpool Community SQL Queries repository! Your contributions help us better understand and analyze blockchain data for the benefit of the community.
