@@ -1,5 +1,5 @@
 /* Dune query number  - 3441005 */
-with days as (select date as d from unnest(sequence(date('2022-02-07'), current_date, interval '1' day)) tbl(date)
+with days as (select tbl.d from unnest(sequence(date('2022-02-07'), current_date, interval '1' day)) as tbl (d)
 ),
 
 totals as (
