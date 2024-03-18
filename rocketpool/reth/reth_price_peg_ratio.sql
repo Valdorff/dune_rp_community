@@ -1,61 +1,79 @@
 /* Dune query number  - 3480165 */
-with hours as (select timestamp as hour, date_trunc('day',timestamp) as day from unnest(sequence(date_trunc('hour',cast(CURRENT_TIMESTAMP as timestamp) - interval '1' year),cast(CURRENT_TIMESTAMP AS TIMESTAMP),interval '60' minute)) tbl(timestamp)
-)
-,
+with hours as (
+    select
+        timestamp as hr,
+        date_trunc('day', timestamp) as d
+    from
+        unnest(
+            sequence(
+                date_trunc('hour', cast(current_timestamp as timestamp) - interval '1' year),
+                cast(current_timestamp as timestamp),
+                interval '60' minute
+            )
+        ) as tbl(timestamp)
+),
+
 peg as (
-    select hr.hour
-        , pg.token_peg_eth
-    from hours hr
-    left join 
-        (select date_trunc('hour',time) as hour 
-            , token_peg_eth
-            , lead(date_trunc('hour',time)) over (order by date_trunc('hour',time)) as next_time
-            from query_3480099) as pg on 
-                hr.hour  >= pg.hour
-                and hr.hour < pg.next_time 
-)
-,
+    select
+        hours.hr,
+        peg.token_peg_eth
+    from hours
+    left join
+        (select
+            date_trunc('hour', t) as hr,
+            token_peg_eth,
+            lead(date_trunc('hour', t)) over (order by date_trunc('hour', t)) as next_hr
+        from query_3480099) as peg on
+        hours.hr >= peg.hr
+        and hours.hr < peg.next_hr
+),
+
 trades as (
     select
-        date_trunc('hour',tr.time) as hour,
-        sum(token_trade_amount_eth) as token_trade_amount_eth,
-        sum(token_trade_amount) as token_trade_amount,
-        sum(token_trade_amount_eth)/sum(token_trade_amount) as token_price_eth
-    from query_3480086 tr
-    where tr.time > cast(CURRENT_TIMESTAMP as timestamp) - interval '1' year
+        date_trunc('hour', trades.t) as hr,
+        sum(trades.token_trade_amount_eth) as token_trade_amount_eth,
+        sum(trades.token_trade_amount) as token_trade_amount,
+        sum(trades.token_trade_amount_eth) / sum(trades.token_trade_amount) as token_price_eth
+    from query_3480086 as trades
+    where trades.t > cast(current_timestamp as timestamp) - interval '1' year
     group by 1
-)
-,
-prices as (
-select hr.hour,
-    pr.token_price_eth,
-    pr.token_trade_amount_eth,
-    pr.token_trade_amount
-    from hours hr
-    left join       
-        (select hour 
-            , token_price_eth
-            , token_trade_amount_eth
-            , token_trade_amount
-            , lead(hour) over (order by hour) as next_time
-            from trades) as pr on 
-                hr.hour  >= pr.hour
-                and hr.hour < pr.next_time 
-)
-select 
-    hr.hour,
-    'rETH' as token_name,
-    pr.token_price_eth,
-    avg(pr.token_price_eth) over (order by hr.hour ROWS BETWEEN 5 PRECEDING AND CURRENT ROW) as token_price_eth_6hr_ma,
-    token_trade_amount_eth,
-    token_trade_amount,
-    pg.token_peg_eth,
-    pr.token_price_eth/pg.token_peg_eth as token_price_peg_ratio,
-    avg(pr.token_price_eth) over (order by hr.hour ROWS BETWEEN 5 PRECEDING AND CURRENT ROW)/pg.token_peg_eth as token_price_peg_ratio_6hr_ma,
-    (pr.token_price_eth/pg.token_peg_eth) - 1 as token_peg_pct_divergence,
-    avg(pr.token_price_eth) over (order by hr.hour ROWS BETWEEN 5 PRECEDING AND CURRENT ROW)/token_peg_eth - 1 as token_peg_pct_divergence_6hr_ma
-from hours hr
-left join peg pg on pg.hour = hr.hour
-left join prices pr on pr.hour = hr.hour
+),
 
-    
+prices as (
+    select
+        hours.hr,
+        prices.token_price_eth,
+        prices.token_trade_amount_eth,
+        prices.token_trade_amount
+    from hours
+    left join
+        (select
+            hr,
+            token_price_eth,
+            token_trade_amount_eth,
+            token_trade_amount,
+            lead(hr) over (order by hr) as next_hr
+        from trades) as prices on
+        hours.hr >= prices.hr
+        and hours.hr < prices.next_hr
+)
+
+select
+    hours.hr,
+    'rETH' as token_name,
+    prices.token_price_eth,
+    avg(prices.token_price_eth)
+        over (order by hours.hr rows between 5 preceding and current row)
+        as token_price_eth_6hr_ma,
+    prices.token_trade_amount_eth,
+    prices.token_trade_amount,
+    peg.token_peg_eth,
+    prices.token_price_eth / peg.token_peg_eth as token_price_peg_ratio,
+    avg(prices.token_price_eth) over (order by hours.hr rows between 5 preceding and current row)
+    / peg.token_peg_eth as token_price_peg_ratio_6hr_ma,
+    (prices.token_price_eth / peg.token_peg_eth) - 1 as token_peg_pct_divergence,
+    avg(prices.token_price_eth) over (order by hours.hr rows between 5 preceding and current row) / peg.token_peg_eth
+    - 1 as token_peg_pct_divergence_6hr_ma
+from hours
+left join peg on hours.hr = peg.hr
+left join prices on hours.hr = prices.hr
