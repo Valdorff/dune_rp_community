@@ -1,7 +1,7 @@
 /* Dune query number  - 3464170 */
 /* rETH */
-SELECT
-    day,
+select
+    d,
     token_mint_amount,
     token_burn_amount,
     token_supply_change_amount,
@@ -9,11 +9,11 @@ SELECT
     token_total_burn,
     token_total_supply,
     token_name
-FROM query_3440968
-UNION ALL
+from query_3440968
+union all
 /* cbETH */
-SELECT
-    day,
+select
+    d,
     token_mint_amount,
     token_burn_amount,
     token_supply_change_amount,
@@ -21,11 +21,11 @@ SELECT
     token_total_burn,
     token_total_supply,
     token_name
-FROM query_3441005
-UNION ALL
+from query_3441005
+union all
 /* stETH */
-SELECT
-    day,
+select
+    d,
     token_mint_amount,
     token_burn_amount,
     token_supply_change_amount,
@@ -33,4 +33,4 @@ SELECT
     token_total_burn,
     token_total_supply,
     token_name
-FROM query_3458937
+from query_3458937
