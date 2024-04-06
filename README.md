@@ -15,10 +15,8 @@ We welcome contributions from members of the Rocketpool Community to enhance and
 3. Create a new branch for your changes: `git checkout -b feature/new-query`.
 4. Make your changes and ensure that the queries are correctly formatted and logically organized.
 5. Test your queries thoroughly using your personal Dune Analytics account to ensure accuracy.
-6. Before committing, ensure you have [sqlfluff](https://github.com/sqlfluff/sqlfluff) installed and run it to lint your SQL queries:
-`sqlfluff lint <path_to_your_sql_file>`
-7. Optionally, to automate linting on commit, add the pre-commit file included in the repo to your local `.git/hooks` folder:
-`cp .pre-commit .git/hooks/pre-commit`
+6. Install [pre-commit](https://pre-commit.com/) by running `pip install pre-commit` if you haven't already.
+7. Set up pre-commit hooks for this repository by running `pre-commit install`.
 8. Once satisfied with your changes, commit them:
 `git add`
 `git commit -m "Add new queries for [purpose]"`.
