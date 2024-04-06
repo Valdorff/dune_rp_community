@@ -10,7 +10,7 @@ with hours as (
                 cast(current_timestamp as timestamp),
                 interval '60' minute
             )
-        ) as tbl(timestamp)
+        ) as tbl (timestamp)
 ),
 
 peg as (
