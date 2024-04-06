@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Run SQLFluff on staged SQL files
-git diff --name-only --cached | grep '\.sql$' | xargs sqlfluff lint
