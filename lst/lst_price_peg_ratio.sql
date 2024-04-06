@@ -1,7 +1,7 @@
 /* Dune query number  - 3480245 */
 /* rETH */
-SELECT
-    hour,
+select
+    hr,
     token_name,
     token_price_eth,
     token_price_eth_6hr_ma,
@@ -12,11 +12,11 @@ SELECT
     token_price_peg_ratio_6hr_ma,
     token_peg_pct_divergence,
     token_peg_pct_divergence_6hr_ma
-FROM query_3480165
-UNION ALL
+from query_3480165
+union all
 /* cbETH */
-SELECT
-    hour,
+select
+    hr,
     token_name,
     token_price_eth,
     token_price_eth_6hr_ma,
@@ -27,11 +27,11 @@ SELECT
     token_price_peg_ratio_6hr_ma,
     token_peg_pct_divergence,
     token_peg_pct_divergence_6hr_ma
-FROM query_3465286
-UNION ALL
+from query_3465286
+union all
 /* stETH */
-SELECT
-    hour,
+select
+    hr,
     token_name,
     token_price_eth,
     token_price_eth_6hr_ma,
@@ -42,4 +42,4 @@ SELECT
     token_price_peg_ratio_6hr_ma,
     token_peg_pct_divergence,
     token_peg_pct_divergence_6hr_ma
-FROM query_3480205
+from query_3480205

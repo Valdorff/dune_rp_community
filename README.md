@@ -15,13 +15,15 @@ We welcome contributions from members of the Rocketpool Community to enhance and
 3. Create a new branch for your changes: `git checkout -b feature/new-query`.
 4. Make your changes and ensure that the queries are correctly formatted and logically organized.
 5. Test your queries thoroughly using your personal Dune Analytics account to ensure accuracy.
-6. Once satisfied with your changes, commit them:
+6. Install [pre-commit](https://pre-commit.com/) by running `pip install pre-commit` if you haven't already.
+7. Set up pre-commit hooks for this repository by running `pre-commit install`.
+8. Once satisfied with your changes, commit them:
 `git add`
 `git commit -m "Add new queries for [purpose]"`.
-7. Push your changes to your forked repository: `git push origin feature/new-query`.
-8. Open a pull request (PR) against the main repository, describing the changes and their purpose clearly.
-9. Wait for review and address any feedback or comments provided.
-10. Once approved, your changes will be merged into the main repository.
+9. Push your changes to your forked repository: `git push origin feature/new-query`.
+10. Open a pull request (PR) against the main repository, describing the changes and their purpose clearly.
+11. Wait for review and address any feedback or comments provided.
+12. Once approved, your changes will be merged into the main repository.
 
 ## Query Structure
 
