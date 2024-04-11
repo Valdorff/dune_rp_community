@@ -1,6 +1,10 @@
 name: Lint Models
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - main
+      # Add additional branches as needed
 
 jobs:
   lint-models:
