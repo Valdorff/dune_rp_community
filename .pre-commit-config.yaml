@@ -2,4 +2,4 @@ repos:
 -   repo: https://github.com/sqlfluff/sqlfluff
     rev: 3.0.3
     hooks:
-    -   id: sqlfluff-fix
+    -   id: sqlfluff-lint
