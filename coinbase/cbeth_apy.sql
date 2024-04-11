@@ -1,4 +1,4 @@
-/* Dune query number  - 3599495 */ 
+/* Dune query number  - 3599495 */
 with hours as (
     select
         timestamp as hr,
