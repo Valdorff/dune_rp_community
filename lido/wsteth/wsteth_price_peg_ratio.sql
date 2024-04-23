@@ -1,4 +1,4 @@
-/* Dune query number  - 3642007 */
+/* Dune query number  - 3656961 */
 with hours as (
     select
         timestamp as hr,
@@ -28,33 +28,17 @@ peg as (
         and hours.hr < peg.next_hr
 ),
 
-
-trades as (
-    select
-        date_trunc('hour', trades.t) as hr,
-        sum(trades.token_trade_amount_eth) as token_trade_amount_eth,
-        sum(trades.token_trade_amount) as token_trade_amount,
-        sum(trades.token_trade_amount_eth) / sum(trades.token_trade_amount) as token_price_eth
-    from query_3636570 as trades
-    where trades.t > cast(current_timestamp as timestamp) - interval '1' year
-    group by 1
-),
-
 prices as (
     select
         hours.hr,
-        prices.token_price_eth,
-        prices.token_trade_amount_eth,
-        prices.token_trade_amount
+        prices.token_price_eth
     from hours
     left join
         (select
             hr,
             token_price_eth,
-            token_trade_amount_eth,
-            token_trade_amount,
             lead(hr) over (order by hr) as next_hr
-        from trades) as prices on
+        from query_3661977) as prices on
         hours.hr >= prices.hr
         and hours.hr < prices.next_hr
 )
@@ -66,8 +50,6 @@ select
     avg(prices.token_price_eth)
         over (order by hours.hr rows between 5 preceding and current row)
         as token_price_eth_6hr_ma,
-    prices.token_trade_amount_eth,
-    prices.token_trade_amount,
     peg.token_peg_eth,
     prices.token_price_eth / peg.token_peg_eth as token_price_peg_ratio,
     avg(prices.token_price_eth) over (order by hours.hr rows between 5 preceding and current row)
