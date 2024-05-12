@@ -1,4 +1,4 @@
-/* Dune query number  - 3664524 */
+/* Dune query number  - 3656961 */
 with hours as (
     select
         timestamp as hr,
@@ -23,7 +23,7 @@ peg as (
             date_trunc('hour', t) as hr,
             token_peg_eth,
             lead(date_trunc('hour', t)) over (order by date_trunc('hour', t)) as next_hr
-        from query_3465256) as peg on
+        from query_3621788) as peg on
         hours.hr >= peg.hr
         and hours.hr < peg.next_hr
 ),
@@ -38,14 +38,14 @@ prices as (
             hr,
             token_price_eth,
             lead(hr) over (order by hr) as next_hr
-        from query_3661946) as prices on
+        from query_3661977) as prices on
         hours.hr >= prices.hr
         and hours.hr < prices.next_hr
 )
 
 select
     hours.hr,
-    'cbETH' as token_name,
+    'wstETH' as token_name,
     prices.token_price_eth,
     avg(prices.token_price_eth)
         over (order by hours.hr rows between 5 preceding and current row)
