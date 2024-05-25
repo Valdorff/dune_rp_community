@@ -1,4 +1,5 @@
 /* Dune query number  - 3742207 */
+/* Technically this should work but the results are too volatile to present with other LSTs */
 with hours as (
     select
         timestamp as hr,

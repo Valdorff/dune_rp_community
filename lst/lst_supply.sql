@@ -10,7 +10,9 @@ select
     token_total_supply,
     token_name
 from query_3440968
+
 union all
+
 /* cbETH */
 select
     d,
@@ -22,7 +24,9 @@ select
     token_total_supply,
     token_name
 from query_3441005
+
 union all
+
 /* stETH */
 select
     d,
@@ -34,3 +38,17 @@ select
     token_total_supply,
     token_name
 from query_3458937
+
+union all
+
+/* ezETH */
+select
+    d,
+    token_mint_amount,
+    token_burn_amount,
+    token_supply_change_amount,
+    token_total_mint,
+    token_total_burn,
+    token_total_supply,
+    token_name
+from query_3738624
