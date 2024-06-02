@@ -53,7 +53,12 @@ apy as (
         ), 0
         ), 0) * pre_apy.peg_chg as apy,
         pre_apy.token_contract_address,
-        pre_apy.token_name
+        pre_apy.token_name,
+        case
+            when
+                pre_apy.peg_chg is not null
+                then rank() over (order by case when pre_apy.peg_chg is not null then hours.hr end asc)
+        end as hr_number
     from hours
     left join pre_apy on
         hours.hr >= pre_apy.hr
@@ -66,11 +71,21 @@ select
     block,
     token_peg_eth,
     apy,
-    avg(apy) over (order by hr asc rows between 24 preceding and current row) as apy_1d,
-    avg(apy) over (order by hr asc rows between 168 preceding and current row) as apy_7d,
-    avg(apy) over (order by hr asc rows between 720 preceding and current row) as apy_30d,
-    avg(apy) over (order by hr asc rows between 2160 preceding and current row) as apy_90d,
-    avg(apy) over (order by hr asc rows between 2880 preceding and current row) as apy_120d,
+    case when hr_number >= 24 then
+            avg(apy) over (order by hr asc rows between 24 preceding and current row)
+    end as apy_1d,
+    case when hr_number >= 168 then
+            avg(apy) over (order by hr asc rows between 168 preceding and current row)
+    end as apy_7d,
+    case when hr_number >= 720 then
+            avg(apy) over (order by hr asc rows between 720 preceding and current row)
+    end as apy_30d,
+    case when hr_number >= 2160 then
+            avg(apy) over (order by hr asc rows between 2160 preceding and current row)
+    end as apy_90d,
+    case when hr_number >= 2880 then
+            avg(apy) over (order by hr asc rows between 2880 preceding and current row)
+    end as apy_120d,
     date_trunc('hour', prev_t) as prev_hr,
     prev_block,
     prev_token_peg_eth,
