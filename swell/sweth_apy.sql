@@ -1,4 +1,4 @@
-/* Dune query number  - 3599576 */
+/* Dune query number  - 3784128 */
 with hours as (
     select
         timestamp as hr,
@@ -11,29 +11,6 @@ with hours as (
                 interval '60' minute
             )
         ) as tbl (timestamp)
-)
-,
-peg as (
-    select
-        evt_block_time as t,
-        date_trunc('day', evt_block_time) as d,
-        evt_block_number as block,
-        timeelapsed as t_elapsed,
-        posttotalether / cast(posttotalshares as double) as token_peg_eth
-    from
-        lido_ethereum.steth_evt_tokenrebased
-    union all
-    select
-        evt_block_time as t,
-        date_trunc('day', evt_block_time) as d,
-        evt_block_number as block,
-        timeelapsed as t_elapsed,
-        posttotalpooledether / cast(totalshares as double) as token_peg_eth
-    from
-        lido_ethereum.legacyoracle_evt_posttotalshares
-    where
-        evt_block_time >= cast('2022-09-01 00:00' as timestamp)
-        and evt_block_time <= cast('2023-05-16 00:00' as timestamp)
 )
 ,
 
@@ -49,11 +26,11 @@ pre_apy as (
         token_peg_eth,
         lag(token_peg_eth) over (order by t) as prev_token_peg_eth,
         100 * (token_peg_eth / lag(token_peg_eth) over (order by t) - 1) as peg_chg,
-        0xae7ab96520de3a18e5e111b5eaab095312d7fe84 as token_contract_address,
-        'stETH' as token_name,
+        token_contract_address,
+        token_name,
         lead(date_trunc('hour', t)) over (order by date_trunc('hour', t)) as next_hr
     from
-        peg
+        query_3766963
     where t >= cast(current_timestamp as timestamp) - interval '1' year
 )
 ,
