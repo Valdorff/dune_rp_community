@@ -74,3 +74,16 @@ select
     token_price_eth
 from
     query_3763815
+
+union all
+
+/* sfrxETH */
+select
+    hr,
+    token_contract_address,
+    token_name,
+    token_price_usd,
+    weth_price_usd,
+    token_price_eth
+from
+    query_3810147

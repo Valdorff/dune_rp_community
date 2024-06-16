@@ -66,3 +66,17 @@ select
     token_total_supply,
     token_name
 from query_3763838
+
+union all
+
+/* sfrxETH */
+select
+    d,
+    token_mint_amount,
+    token_burn_amount,
+    token_supply_change_amount,
+    token_total_mint,
+    token_total_burn,
+    token_total_supply,
+    token_name
+from query_3810114

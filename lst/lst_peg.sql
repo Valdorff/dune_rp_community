@@ -49,6 +49,20 @@ with peg as (
         token_contract_address
     from
         query_3766963
+
+    union all
+
+    /* sfrxETH */
+    select
+        block,
+        t,
+        d,
+        token_peg_eth,
+        token_name,
+        token_contract_address
+    from
+        query_3810178
+
 )
 ,
 times as (
