@@ -33,15 +33,15 @@ reth_evt_houston as (
     select
         block_time as t,
         date_trunc('day', block_time) as d,
-        bytearray_to_uint256(bytearray_substring(data, 1, 32)) as block,
-        bytearray_to_uint256(bytearray_substring(data, 65, 32)) as totaleth,
-        bytearray_to_uint256(bytearray_substring(data, 129, 32)) as rethsupply
+        bytearray_to_uint256(topic1) as block,
+        bytearray_to_uint256(bytearray_substring(data, 33, 32)) as totaleth,
+        bytearray_to_uint256(bytearray_substring(data, 97, 32)) as rethsupply
     from
         ethereum.logs
     where
         contract_address = 0x6cc65bf618f55ce2433f9d8d827fc44117d81399
         and block_time >= cast('2024-06-18 00:00' as timestamp)
-        and topic0 = 0x9b240d5b912ab6df93782930ae851a85b25e5a419c05cbb84d1b9e4b86a3c573
+        and topic0 = 0xdd27295717c4fbd48b1840f846e18be6f0b7bd6b55608e697e53b15848cecdf9
 )
 
 select
