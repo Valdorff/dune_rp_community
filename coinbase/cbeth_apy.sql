@@ -1,16 +1,12 @@
 /* Dune query number  - 3599495 */
 with hours as (
     select
-        timestamp as hr,
-        date_trunc('day', timestamp) as d
+        date_add('hour', step, day) as hr,
+        day as d
     from
-        unnest(
-            sequence(
-                date_trunc('hour', cast(current_timestamp as timestamp) - interval '1' year),
-                cast(current_timestamp as timestamp),
-                interval '60' minute
-            )
-        ) as tbl (timestamp)
+        unnest(sequence(cast('2022-07-15 00:00' as timestamp), current_date, interval '1' day)) as t (day)
+    cross join
+        (select * from unnest(sequence(1, 24, 1)) as t (step))
 )
 ,
 
@@ -31,7 +27,7 @@ pre_apy as (
         lead(date_trunc('hour', t)) over (order by date_trunc('hour', t)) as next_hr
     from
         query_3465256
-    where t >= cast(current_timestamp as timestamp) - interval '1' year
+    where t >= cast('2022-07-15 00:00' as timestamp)
 )
 ,
 
