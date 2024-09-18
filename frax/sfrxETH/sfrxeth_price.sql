@@ -7,7 +7,7 @@ with weth as (
         prices.usd
     where
         contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        and minute >= cast(current_timestamp - interval '1' year as timestamp)
+        and minute >= cast('2022-10-06 00:00' as timestamp)
     group by
         date_trunc('hour', minute)
 )
@@ -21,7 +21,7 @@ token as (
         prices.usd
     where
         contract_address = 0xac3e018457b222d93114458476f3e3416abbe38f
-        and minute >= cast(current_timestamp - interval '1' year as timestamp)
+        and minute >= cast('2022-10-06 00:00' as timestamp)
     group by
         date_trunc('hour', minute),
         contract_address
