@@ -1,17 +1,14 @@
 /* Dune query number  - 3784121 */
 with hours as (
     select
-        timestamp as hr,
-        date_trunc('day', timestamp) as d
+        date_add('hour', step, day) as hr,
+        day as d
     from
-        unnest(
-            sequence(
-                date_trunc('hour', cast(current_timestamp as timestamp) - interval '1' year),
-                cast(current_timestamp as timestamp),
-                interval '60' minute
-            )
-        ) as tbl (timestamp)
-),
+        unnest(sequence(cast('2023-04-18 00:00' as timestamp), current_date, interval '1' day)) as t (day)
+    cross join
+        (select * from unnest(sequence(1, 24, 1)) as t (step))
+)
+,
 
 peg as (
     select
@@ -35,7 +32,7 @@ trades as (
         sum(trades.token_trade_amount) as token_trade_amount,
         sum(trades.token_trade_amount_eth) / sum(trades.token_trade_amount) as token_price_eth
     from query_3763812 as trades
-    where trades.t > cast(current_timestamp as timestamp) - interval '1' year
+    where trades.t > cast('2023-04-18 00:00' as timestamp)
     group by 1
 ),
 
