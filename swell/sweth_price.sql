@@ -7,7 +7,7 @@ with weth as (
         prices.usd
     where
         contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-        and minute >= cast(current_timestamp - interval '1' year as timestamp)
+        and minute >= cast('2023-04-18 00:00' as timestamp)
     group by
         date_trunc('hour', minute)
 )
@@ -21,7 +21,7 @@ token as (
         prices.usd
     where
         contract_address = 0xf951e335afb289353dc249e82926178eac7ded78
-        and minute >= cast(current_timestamp - interval '1' year as timestamp)
+        and minute >= cast('2023-04-18 00:00' as timestamp)
     group by
         date_trunc('hour', minute),
         contract_address
