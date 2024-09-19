@@ -32,7 +32,8 @@ select
     token.contract_address as token_contract_address,
     'cbETH' as token_name,
     token.price as token_price_usd,
-    token.price / weth.price as token_price_eth
+    token.price / weth.price as token_price_eth,
+    weth.price as weth_price_usd
 from
     token
 inner join weth on
