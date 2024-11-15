@@ -6,7 +6,7 @@ pub_key as (
         pubkey,
         validator_index
     from
-        query_4250134 --validator_pubkey_index
+        query_4250134 --minipool_pubkey_index
 ),
 
 withdrawals as (

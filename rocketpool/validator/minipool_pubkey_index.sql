@@ -1,37 +1,16 @@
-/* Dune query number  - 4125574 */
-with
-pub_key as (
+/* Dune query number  - 4250134 */
+with pubkey as (
     select
-        minipool,
         pubkey,
-        validator_index
-    from
-        query_4250134 --minipool_pubkey_index
-),
+        minipool
+    from query_4250058  --minipool_deposit
 
-withdrawals as (
-    select
-        wth.block_time as t,
-        pky.validator_index,
-        wth.amount / 1e9 as amount,
-        pky.minipool,
-        pky.pubkey
-    from
-        pub_key as pky
-    inner join ethereum.withdrawals as wth
-        on pky.validator_index = wth.validator_index
 )
 
 select
-    minipool,
-    validator_index,
-    pubkey,
-    sum(amount) as beacon_amount_withdrawn,
-    sum(if(amount < 8, amount, 0)) as beacon_amount_skim_withdrawn,
-    bool_or(amount > 8) as exited
+    pubkey.minipool,
+    pubkey.pubkey,
+    index.validator_index
 from
-    withdrawals
-group by
-    1,
-    2,
-    3
+    query_4278045 as index --validator_pubkey_index
+inner join pubkey on index.pubkey = pubkey.pubkey
