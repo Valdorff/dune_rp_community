@@ -1,42 +1,30 @@
-with
-nodes as (
-    select node_address
-    from
-        query_4108312
-)
-,
-rpl_staked as (
+/* Dune query number  - 4322604 */
+with days as (select tbl.d from unnest(sequence(date('2021-10-02'), current_date, interval '1' day)) as tbl (d)
+),
+
+staked as (
     select
-        "from" as node_address,
-        cast(amount / 1e18 as double) as amount,
-        evt_block_time as t
-    from
-        rocketpool_ethereum.RocketNodeStaking_evt_RPLStaked
-)
-,
-rpl_withdrawn as (
+        date_trunc('day', t) as d,
+        sum(amount) as amount
+    from query_4108361 group by 1
+),
+
+totals as (
     select
-        to as node_address,
-        -1 * cast(amount / 1e18 as double) as amount,
-        evt_block_time as t
+        days.d,
+        cast(coalesce(sum(staked.amount), 0) as double) as token_staked_amount
     from
-        rocketpool_ethereum.RocketNodeStaking_evt_RPLWithdrawn
-)
-,
-rpl_slashed as (
-    select
-        node as node_address,
-        -1 * cast(amount / 1e18 as double) as amount,
-        evt_block_time as t
-    from
-        rocketpool_ethereum.RocketNodeStaking_evt_RPLSlashed
+        days
+    left join
+        staked
+        on days.d = staked.d
+    group by 1
 )
 
 select
-    nodes.node_address,
-    coalesce(rpl_staked.t, rpl_withdrawn.t, rpl_slashed.t) as t,
-    coalesce(rpl_staked.amount, rpl_withdrawn.amount, rpl_slashed.amount) as amount
-from nodes
-left join rpl_staked on nodes.node_address = rpl_staked.node_address
-left join rpl_withdrawn on nodes.node_address = rpl_withdrawn.node_address
-left join rpl_slashed on nodes.node_address = rpl_slashed.node_address
+    d,
+    token_staked_amount,
+    sum(token_staked_amount) over (order by d asc) as total_staked_amount,
+    'RPL' as token_name
+from totals
+order by 1 asc
