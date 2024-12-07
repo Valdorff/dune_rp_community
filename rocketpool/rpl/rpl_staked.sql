@@ -7,8 +7,8 @@ staked as (
         date_trunc('day', t) as d,
         sum(amount) as amount
     from query_4108361 group by 1
-),
-
+)
+,
 totals as (
     select
         days.d,

@@ -30,17 +30,20 @@ rpl_slashed as (
 select
     node_address,
     t,
-    amount
+    amount,
+    'staked' as cat
 from rpl_staked
 union all
 select
     node_address,
     t,
-    amount
+    amount,
+    'withdrawn' as cat
 from rpl_withdrawn
 union all
 select
     node_address,
     t,
-    amount
+    amount,
+    'slashed' as cat
 from rpl_slashed
