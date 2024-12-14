@@ -36,15 +36,13 @@ select
     nodes.node_address,
     nodes.node_ens,
     nodes.t as node_registered_t,
-    minipools.total_minipools,
-    minipools.active_minipools,
-    minipools.exited_minipools,
-    minipools.active_effective_stake,
-    minipools.active_bond_amount,
-    minipools.active_effective_stake - minipools.active_bond_amount as active_borrowed_amount,
-    rpl_stake.rpl_staked_amount,
-    (select rpl_price_usd from rpl_price)
-    / (select weth_price_usd from weth_price) as rpl_weth_price_ratio,
+    coalesce(minipools.total_minipools, 0) as total_minipools,
+    coalesce(minipools.active_minipools, 0) as active_minipools,
+    coalesce(minipools.exited_minipools, 0) as exited_minipools,
+    coalesce(minipools.active_effective_stake, 0) as active_effective_stake,
+    coalesce(minipools.active_bond_amount, 0) as active_bond_amount,
+    coalesce(minipools.active_effective_stake - minipools.active_bond_amount, 0) as active_borrowed_amount,
+    coalesce(rpl_stake.rpl_staked_amount, 0) as rpl_staked_amount,
     (select rpl_price_usd from rpl_price)
     / (select weth_price_usd from weth_price) * rpl_stake.rpl_staked_amount as rpl_staked_amount_weth,
     case when minipools.active_effective_stake > 0
@@ -56,9 +54,9 @@ select
                 )
                 / (minipools.active_effective_stake - minipools.active_bond_amount)
         else 0
-    end as rpl_collateral_ratio,
-    smooth.in_smoothing_pool,
-    smooth.t as in_smoothing_pool_t
+    end as rpl_vs_borrowed_ratio,
+    coalesce(smooth.in_smoothing_pool, false) as in_smoothing_pool,
+    coalesce(smooth.t, nodes.t) as in_smoothing_pool_t
 from query_4108312 as nodes /* node_operators */
 left join minipools on nodes.node_address = minipools.node_address
 left join rpl_stake on nodes.node_address = rpl_stake.node_address

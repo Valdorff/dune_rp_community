@@ -26,6 +26,7 @@ select
     minipool,
     validator_index,
     pubkey,
+    max(t) as last_withdrawal_t,
     sum(amount) as beacon_amount_withdrawn,
     sum(if(amount < 8, amount, 0)) as beacon_amount_skim_withdrawn,
     bool_or(amount > 8) as exited
