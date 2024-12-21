@@ -1,4 +1,4 @@
-/* Dune query number  - 4125671 */
+/* Dune query number  - 4351977 */
 with minipools as (
     select
         node_address,

@@ -7,6 +7,10 @@ select
     deposits.deposit_type,
     deposits.bond_amount as orig_bond_amount,
     deposits.node_fee as orig_node_fee,
+    queue.enqueued_t,
+    queue.dequeued_t,
+    queue.queue_days,
+    queue.queue_hrs,
     beacon_dep.beacon_amount_deposited,
     pubkey.pubkey,
     pubkey.validator_index,
@@ -30,3 +34,5 @@ left join query_4125574 as beacon_wth /* minipool_beacon_withdrawals */
     on deposits.minipool = beacon_wth.minipool
 left join query_4125568 as dist /* minipool_beacon_withdrawals */
     on minipool.minipool = dist.minipool
+left join query_4459261 as queue /* minipool_queue */
+    on minipool.minipool = queue.minipool
